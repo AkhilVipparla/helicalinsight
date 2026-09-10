@@ -17,13 +17,19 @@ import java.util.List;
 
 
 /**
+ * Provides MongoDB connectivity for Helical Insight through Apache Drill's
+ * built-in MongoDB storage plugin. A MongoDB connection created from the
+ * "No SQL &amp; Big Data" category is registered as a Drill storage plugin
+ * (via the Drill REST API) so that it can subsequently be queried like any
+ * other Drill backed data source (schemas/tables map to MongoDB
+ * databases/collections).
+ *
  * @author Somen
  * Created on 11/15/2017.
  */
 
 @Component("com.helicalinsight.nosql.mongo")
 @Scope("prototype")
-@Deprecated
 public class MongoDrillLoader extends NoSQLLoader {
     @Override
     public boolean loadToMiddleWare(JsonObject formDataJson) {
@@ -224,6 +230,8 @@ class MongoModel {
             if ((username == null) || (password == null) || (authMechanism == null)) {
                 mongo = new MongoClient(host);
                 this.mongoDb = mongo.getDB(database);
+                mongo.getAddress();
+                return this.mongoDb != null;
             } else {
                 List<ServerAddress> seeds = new ArrayList<>();
                 seeds.add(new ServerAddress(host));
@@ -271,7 +279,6 @@ class MongoModel {
                 mongo.close();
             }
         }
-        return false;
     }
 
     private boolean notNullOrBlank(String trustStorePassword) {

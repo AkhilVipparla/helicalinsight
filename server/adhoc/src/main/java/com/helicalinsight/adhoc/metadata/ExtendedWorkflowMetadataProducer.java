@@ -85,7 +85,7 @@ public class ExtendedWorkflowMetadataProducer extends WorkflowMetadataProducer {
 
 	protected void setDatabaseType(Metadata metadata) {
 
-		metadata.setDatabaseType("mongoDb" + "mongo");
+		metadata.setDatabaseType("Mongodb");
 	}
 
 }
